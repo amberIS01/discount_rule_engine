@@ -1,0 +1,25 @@
+Reflection & Design Write-Up
+
+For this assignment, I designed a pluggable discount rule engine instead of using plain if/else conditions. Each discount rule (New Customer, Large Order, Wednesday) is implemented as an independent class following a common Rule interface. The DiscountEngine is responsible for evaluating which rules apply, selecting the highest-priority one, and calculating the final payable amount.
+
+This approach makes the system modular and extensible: new rules can be added simply by creating another class that implements the Rule contract and registering it with the engine. The rule priorities are explicit and easy to maintain, and the engine cleanly enforces the "only one rule applies" policy with a tie-breaker based on maximum discount.
+
+If the number of rules grows to 20+, challenges may include:
+
+Performance overhead of evaluating every rule for each order.
+
+Managing priorities and dependencies between rules.
+
+Increased testing effort to ensure no unintended overlaps.
+
+To improve scalability, I would:
+
+Store rules in a configuration file or database instead of code, allowing marketing or operations teams to adjust discounts without code changes.
+
+Introduce a rule registry with metadata (priority, active/inactive, valid dates).
+
+Use a more formal rule engine framework (e.g., Drools or JSONLogic) if the ruleset becomes very large.
+
+Implement caching and short-circuit evaluation for performance.
+
+This design strikes a balance between simplicity for now and flexibility for future growth, ensuring that the discount system can evolve with business needs.
